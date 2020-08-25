@@ -47,11 +47,16 @@ def get_available_api_key_instance():
 
 def get_video_queryset_by_query(query):
     if query:
-        query_chain = Q()
+        title_query_chain = Q()
+        description_query_chain = Q()
         for word in query.split(" "):
-            query_chain = query_chain & Q(title__icontains=word)
-        query_chain = query_chain | Q(description__icontains=query)
-        return Video.objects.filter(query_chain).order_by("-published_at")
+            title_query_chain = title_query_chain & Q(title__icontains=word)
+            description_query_chain = description_query_chain & Q(
+                description__icontains=word
+            )
+        return Video.objects.filter(
+            title_query_chain | description_query_chain
+        ).order_by("-published_at")
     return Video.objects.none()
 
 
