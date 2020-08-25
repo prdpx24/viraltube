@@ -21,11 +21,15 @@ class VideoViewSet(viewsets.ModelViewSet):
     serializer_class = VideoSerializer
 
     def list(self, request):
-        query = request.query_params.get("q")
+        query = request.query_params.get("query")
         qs = get_video_queryset_by_query(query)
         if qs.exists() is False:
             # first fetch youtube videos via non-async util
-            fetch_and_save_youtube_videos_by_query_util(query)
+            count = fetch_and_save_youtube_videos_by_query_util(query)
+            if count == 0:
+                # quota exceeded, let's try again one more time with different token
+                fetch_and_save_youtube_videos_by_query_util(query)
+
             qs = get_video_queryset_by_query(query)
         page = self.paginate_queryset(qs)
         serializer = VideoSerializer(page, many=True, context={"request": request})

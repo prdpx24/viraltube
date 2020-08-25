@@ -42,6 +42,14 @@ class YoutubeAPIClient:
         else:
             cache.incr(key)
 
+    @staticmethod
+    def set_quota_exceeded_on_api_token(api_token):
+        key = YOUTUBE_API_HIT_COUNT_CACHE_KEY_PREFIX + api_token
+        if key not in cache:
+            cache.set(key, 10000, timeout=SECONDS_IN_A_DAY)
+        else:
+            cache.set(key, 10000, timeout=SECONDS_IN_A_DAY)
+
     def search(self, q, next_page_token=None, order_by="date", page_size=10):
         self.query_params["q"] = q
         self.query_params["nextPageToken"] = next_page_token
@@ -49,9 +57,14 @@ class YoutubeAPIClient:
         self.query_params["maxResults"] = page_size
         url = self.prepare_request()
         resp = requests.get(url)
+
         if resp.status_code == 200:
             YoutubeAPIClient.increment_api_hit_count(self.api_token)
             return resp.json()
+        else:
+            print("API Error")
+            print(resp.json()["error"]["message"])
+            YoutubeAPIClient.set_quota_exceeded_on_api_token(self.api_token)
 
         # else fail silently
         return None

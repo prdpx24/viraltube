@@ -16,6 +16,11 @@ class Video(models.Model):
 
     published_at = models.DateTimeField(blank=False, null=False)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=["title", "youtube_video_id"]),
+        ]
+
     @staticmethod
     def get_video_id_from_youtube_video_url(video_url):
         return video_url.replace("https://www.youtube.com/watch?v=", "")

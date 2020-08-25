@@ -15,7 +15,7 @@ def get_least_used_api_token_from_redis_store():
         least_used_key = sorted(api_key_hit_count_dict, key=api_key_hit_count_dict.get)[
             0
         ]
-        return least_used_key
+        return least_used_key.replace(YOUTUBE_API_HIT_COUNT_CACHE_KEY_PREFIX, "")
     return None
 
 
@@ -31,6 +31,7 @@ def get_available_api_key_instance():
     # get unused api_key from database, set it's hit_count to 0 in redis and start using it
     prefix = YOUTUBE_API_HIT_COUNT_CACHE_KEY_PREFIX
     keys = cache.keys(prefix + "*")
+    keys = [k.replace(prefix, "") for k in keys]
     api_key_yet_to_be_used_qs = APIKey.objects.exclude(token__in=keys)
     if api_key_yet_to_be_used_qs.exists():
         api_key = api_key_yet_to_be_used_qs.first()

@@ -35,6 +35,7 @@ def run_periodic_background_task_and_update_db(query):
 def fetch_and_save_youtube_videos_by_query_util(query):
     api_key = get_available_api_key_instance()
     if api_key:
+        # print("api_key", api_key)
         yt_client = YoutubeAPIClient(api_key.token)
         resp = yt_client.search(query, order_by="date", page_size=50)
         if resp:
@@ -52,7 +53,9 @@ def fetch_and_save_youtube_videos_by_query_util(query):
 
             if video_instances_to_create:
                 # bulk_create for faster performance
-                Video.objects.bulk_create(video_instances_to_create)
+                count = Video.objects.bulk_create(video_instances_to_create)
+                return count
+        return 0
 
 
 @app.task(bind=True)

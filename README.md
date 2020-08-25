@@ -62,10 +62,10 @@ celery -A tasks worker -l info
 ### List Videos
 * will returns the stored video data in a paginated response sorted in descending order of published datetime and a background cron get started and will fetch and save videos based on query, every 60 seconds.
 * method - `GET`
-* url  - `http://localhost:8000/videos/api/?q=football`
+* url  - `http://localhost:8000/videos/api/?query=football`
 * Example - 
 ```bash
-    curl -H "Content-Type:application/json" "http://localhost:8000/api/videos/?q=football"
+    curl -H "Content-Type:application/json" "http://localhost:8000/api/videos/?query=football"
 ```
 <details><summary>Response</summary>
 <img src="https://i.imgur.com/bwgHa6i.gif" width=900>
@@ -77,7 +77,7 @@ celery -A tasks worker -l info
 * url - `http://127.0.0.1:8000/api/videos/search/?query=football instagram`
 * Example - 
 ```bash
-    curl -H "Content-Type:application/json" "http://localhost:8000/api/videos/?q=football instagram"
+    curl -H "Content-Type:application/json" "http://localhost:8000/api/videos/?query=football instagram"
 ```
 <details><summary>Response</summary>
 <img src="https://i.imgur.com/clJffed.gif" width=900>
