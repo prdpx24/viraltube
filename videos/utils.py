@@ -1,11 +1,16 @@
 import requests
 
 from django.core.cache import cache
+from django.utils.dateparse import parse_datetime
 
 from videos.constants import YOUTUBE_API_HIT_COUNT_CACHE_KEY_PREFIX, SECONDS_IN_A_DAY
 
 
 class YoutubeAPIClient:
+    """
+    A simple youtube api client
+    """
+
     SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
 
     def __init__(self, api_token):
@@ -61,7 +66,7 @@ class YoutubeAPIClient:
                 "youtube_video_id": item["id"]["videoId"],
                 "channel_name": item["snippet"]["channelTitle"],
                 "thumbnail_url": item["snippet"]["thumbnails"]["high"]["url"],
-                "published_at": item["snippet"]["publishTime"],
+                "published_at": parse_datetime(item["snippet"]["publishTime"]),
             }
             result.append(data)
         return result

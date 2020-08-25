@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "celery",
     "kombu",
+    "django_celery_beat",
+    # Local Apps
     "videos.apps.VideosConfig",
 ]
 
@@ -131,6 +133,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Celery config
+
 CELERY_IGNORE_RESULT = True
 CELERY_ACCEPT_CONTENT = ["pickle"]
 CELERY_TASK_SERIALIZER = "pickle"
@@ -139,8 +142,14 @@ CELERY_TASK_SERIALIZER = "pickle"
 CELERY_RESULT_BACKEND = "redis://"
 CELERY_IMPORTS = ("videos.tasks",)
 
-# Cron to execute every 15 seconds to fetch videos via youtube api
-BACKGROUND_TASK_PERIODIC_INTERVAL = 15
+# Cron to execute task on every 60 seconds to fetch videos via youtube api
+BACKGROUND_TASK_CRONTAB_SCHEDULE = {
+    "minute": "*",
+    "hour": "*",
+    "day_of_week": "*",
+    "day_of_month": "*",
+    "month_of_year": "*",
+}
 
 # DRF config
 REST_FRAMEWORK = {
