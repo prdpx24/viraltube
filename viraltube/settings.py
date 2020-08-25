@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "celery",
+    "kombu",
     "videos.apps.VideosConfig",
 ]
 
@@ -122,7 +125,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
 
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Celery config
 CELERY_IGNORE_RESULT = True
@@ -131,5 +137,18 @@ CELERY_TASK_SERIALIZER = "pickle"
 CELERY_RESULT_SERIALIZER = "pickle"
 CELERY_TASK_SERIALIZER = "pickle"
 CELERY_RESULT_BACKEND = "redis://"
-# CELERY_IMPORTS = ()
+CELERY_IMPORTS = ("videos.tasks",)
 
+# Cron to execute every 15 seconds to fetch videos via youtube api
+BACKGROUND_TASK_PERIODIC_INTERVAL = 15
+
+# DRF config
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    ),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 10,
+}

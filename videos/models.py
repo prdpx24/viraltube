@@ -2,7 +2,7 @@ from django.db import models
 from django.core.cache import cache
 
 
-from .constants import YOUTUBE_API_HIT_COUNT_CACHE_KEY
+from .constants import YOUTUBE_API_HIT_COUNT_CACHE_KEY_PREFIX
 
 
 class Video(models.Model):
@@ -25,8 +25,8 @@ class Video(models.Model):
         return "https://www.youtube.com/watch?v={}".format(self.youtube_video_id)
 
     def __str__(self):
-        return "{title} - {channel_title}".format(
-            title=self.title, channel_title=self.channel_title
+        return "{title} - {channel_name}".format(
+            title=self.title, channel_name=self.channel_name
         )
 
 
@@ -42,7 +42,7 @@ class APIKey(models.Model):
     @property
     def remaining_queries(self):
         # cache_key = youtube_api_hit_count
-        key = YOUTUBE_API_HIT_COUNT_CACHE_KEY
+        key = YOUTUBE_API_HIT_COUNT_CACHE_KEY_PREFIX + self.token
         if key in cache:
             return cache.get(key) - self.query_limit_per_day
         return self.query_limit_per_day
