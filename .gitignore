@@ -94,5 +94,8 @@ ENV/
 # Redis-dump
 dump.rdb
 
+# Assets
+static/
+
 # ignore demo gifs
 *.gif
