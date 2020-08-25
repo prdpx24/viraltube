@@ -45,7 +45,7 @@ pip install -r requirements.txt
 # you can skip below steps since all migrations are already applied and sqlite file is exists in repo
 python manage.py makemigrations
 python manage.py migrate
-
+```
 * Running Server(s)
 ```bash
 python manage.py runserver 8000
@@ -77,7 +77,7 @@ celery -A tasks worker -l info
 * url - `http://127.0.0.1:8000/api/videos/search/?query=football instagram`
 * Example - 
 ```bash
-    curl -H "Content-Type:application/json" "http://localhost:8000/api/videos/?query=football instagram"
+    curl -H "Content-Type:application/json" "http://127.0.0.1:8000/api/videos/search/?query=football instagram"
 ```
 <details><summary>Response</summary>
 <img src="https://i.imgur.com/clJffed.gif" width=900>
