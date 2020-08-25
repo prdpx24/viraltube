@@ -8,7 +8,7 @@
 ```bash
 git clone https://github.com/prdpx24/viraltube.git
 cd viraltube/
-chmod +x buid.sh
+chmod +x build.sh
 ```
 * Execute `build.sh` to start the build and run server
 ```bash
