@@ -1,5 +1,5 @@
 # Viraltube
-> A simple API to fetch latest youtube videos for a given query
+> A set of APIs to fetch latest youtube videos for a given query
 
 ## Installation
 
