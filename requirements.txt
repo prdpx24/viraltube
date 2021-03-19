@@ -15,7 +15,7 @@ django-celery==3.3.1
 django-celery-beat==2.0.0
 django-redis==4.12.1
 django-timezone-field==4.0
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 idna==2.10
 importlib-metadata==1.7.0
 ipython==7.17.0
